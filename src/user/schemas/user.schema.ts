@@ -1,6 +1,7 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { Post } from '../../post/schemas/post.schema';
+import * as mongoose from 'mongoose';
 
 export type UserDocument = User & Document;
 
@@ -18,31 +19,34 @@ export class User {
   @Prop({ required: true })
   password: string;
 
-  @Prop()
+  @Prop({
+    default:
+      'https://res.cloudinary.com/devstylea/image/upload/v1664359082/fallback_profile_sgxnrc.png',
+  })
   avatar: string;
 
-  @Prop()
+  @Prop({ default: '' })
   banner: string;
 
-  @Prop()
+  @Prop({ default: '' })
   link: string;
 
-  @Prop()
+  @Prop({ default: '' })
   bio: string;
 
   @Prop()
   birth: Date;
 
-  @Prop()
+  @Prop({ default: '' })
   location: string;
 
-  @Prop()
-  followers: [];
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] })
+  followers: User[];
 
-  @Prop()
-  following: [];
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] })
+  following: User[];
 
-  @Prop()
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }] })
   saved: Post[];
 
   @Prop()

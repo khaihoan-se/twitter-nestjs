@@ -1,18 +1,22 @@
 import { IsNotEmpty, IsEmail, Length } from 'class-validator';
 
 export class AuthResgiter {
-  // @IsNotEmpty()
-  // @IsEmail()
+  @IsNotEmpty()
+  @IsEmail()
   email: string;
-  // @IsNotEmpty()
+  @IsNotEmpty()
   fullname: string;
   username: string;
-  // @IsNotEmpty()
-  // @Length(8)
+  @IsNotEmpty()
+  @Length(8)
   password: string;
 }
 
 export class AuthLogin {
+  @IsNotEmpty()
+  @IsEmail()
   email: string;
+  @IsNotEmpty()
+  @Length(8)
   password: string;
 }
