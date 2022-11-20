@@ -7,10 +7,10 @@ export type UserDocument = User & Document;
 
 @Schema()
 export class User {
-  @Prop({ required: true, maxlength: 25 })
+  @Prop({ required: true, maxlength: 50 })
   fullname: string;
 
-  @Prop({ required: true, unique: true })
+  @Prop({ required: true, unique: true, maxlength: 25 })
   username: string;
 
   @Prop({ required: true, unique: true })
@@ -28,16 +28,16 @@ export class User {
   @Prop({ default: '' })
   banner: string;
 
-  @Prop({ default: '' })
+  @Prop({ default: '', maxlength: 100 })
   link: string;
 
-  @Prop({ default: '' })
+  @Prop({ default: '', maxlength: 160 })
   bio: string;
 
   @Prop()
   birth: Date;
 
-  @Prop({ default: '' })
+  @Prop({ default: '', maxlength: 30 })
   location: string;
 
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] })
