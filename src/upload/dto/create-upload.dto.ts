@@ -1,3 +1,5 @@
 export class CreateUploadDto {
-  fileName: string;
+  filename: string;
+  path: string;
+  mimetype: string;
 }

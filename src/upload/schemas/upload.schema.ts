@@ -6,7 +6,11 @@ export type UploadDocument = Upload & Document;
 @Schema({ timestamps: true })
 export class Upload {
   @Prop()
-  fileName: string;
+  filename: string;
+  @Prop()
+  path: string;
+  @Prop()
+  mimetype: string;
 }
 
 export const UploadSchema = SchemaFactory.createForClass(Upload);

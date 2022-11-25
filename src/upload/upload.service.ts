@@ -11,8 +11,9 @@ export class UploadService {
     @InjectModel(Upload.name) private uploadModal: Model<UploadDocument>,
   ) {}
 
-  async create(createUploadDto: CreateUploadDto): Promise<UploadDocument> {
-    const createdUser = new this.uploadModal(createUploadDto);
+  async create(file: Express.Multer.File): Promise<UploadDocument> {
+    const fileName = file.path;
+    const createdUser = new this.uploadModal(fileName);
     return createdUser.save();
   }
 
