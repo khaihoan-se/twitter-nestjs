@@ -6,10 +6,13 @@ import {
   Param,
   Delete,
   UseGuards,
+  Post,
+  Req,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { Request } from 'express';
 
 @Controller('users')
 export class UserController {
@@ -32,5 +35,18 @@ export class UserController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.usersService.remove(id);
+  }
+
+  // ---------------------------------------
+  @UseGuards(AuthGuard('jwt'))
+  @Post(':id/follow')
+  follow(@Param('id') id: string, @Req() req: Request) {
+    return this.usersService.follow(id, req);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Post(':id/unfollow')
+  unfollow(@Param('id') id: string, @Req() req: Request) {
+    return this.usersService.unfollow(id, req);
   }
 }

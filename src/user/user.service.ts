@@ -1,5 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { Request } from 'express';
 import { Model } from 'mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -41,5 +42,55 @@ export class UserService {
 
   async remove(id: string): Promise<UserDocument> {
     return this.userModel.findByIdAndDelete(id).exec();
+  }
+
+  async follow(id: string, req: any) {
+    const user = await this.userModel.find({ _id: id, followers: req.user.id });
+    console.log(user);
+    if (user.length > 0) {
+      throw new HttpException(
+        'You followed this user.',
+        HttpStatus.GATEWAY_TIMEOUT,
+      );
+    }
+    const newUser = await this.userModel
+      .findOneAndUpdate(
+        { _id: id },
+        {
+          $push: { followers: req.user.id },
+        },
+        { new: true },
+      )
+      .populate('followers following', '-password');
+
+    await this.userModel.findOneAndUpdate(
+      { _id: req.user.id },
+      {
+        $push: { following: id },
+      },
+      { new: true },
+    );
+    return newUser;
+  }
+
+  async unfollow(id: string, req: any) {
+    const newUser = await this.userModel
+      .findOneAndUpdate(
+        { _id: id },
+        {
+          $pull: { followers: req.user.id },
+        },
+        { new: true },
+      )
+      .populate('followers following', '-password');
+    await this.userModel.findOneAndUpdate(
+      { _id: req.user.id },
+      {
+        $pull: { following: id },
+      },
+      { new: true },
+    );
+
+    return newUser;
   }
 }

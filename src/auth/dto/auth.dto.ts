@@ -17,6 +17,5 @@ export class AuthLogin {
   @IsEmail()
   email: string;
   @IsNotEmpty()
-  @Length(8)
   password: string;
 }

@@ -12,6 +12,9 @@ async function bootstrap() {
   app.useStaticAssets(join(__dirname, '..', 'profile_images'), {
     prefix: '/profile_images/',
   });
+  app.useStaticAssets(join(__dirname, '..', 'profile_banners'), {
+    prefix: '/profile_banners/',
+  });
   // Auto Validate
   app.useGlobalPipes(new ValidationPipe());
   app.use(cookieParser());
